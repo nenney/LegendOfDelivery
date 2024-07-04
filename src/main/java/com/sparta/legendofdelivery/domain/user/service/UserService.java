@@ -1,5 +1,7 @@
 package com.sparta.legendofdelivery.domain.user.service;
 
+import com.sparta.legendofdelivery.domain.like.repository.LikeRepository;
+import com.sparta.legendofdelivery.domain.like.repository.LikeRepositoryCustomImpl;
 import com.sparta.legendofdelivery.domain.user.dto.*;
 import com.sparta.legendofdelivery.domain.user.entity.User;
 import com.sparta.legendofdelivery.domain.user.entity.UserOauth;
@@ -34,11 +36,13 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtProvider jwtProvider;
+    private final LikeRepositoryCustomImpl likeRepositoryCustomimpl;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtProvider jwtProvider) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtProvider jwtProvider, LikeRepositoryCustomImpl likeRepositoryCustomimpl) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtProvider = jwtProvider;
+        this.likeRepositoryCustomimpl = likeRepositoryCustomimpl;
     }
 
     @Transactional
@@ -111,8 +115,11 @@ public class UserService {
     public DataResponse<UserProfileResponseDto> getProfile() {
 
         User user = getUser();
+        int likedReviewsCount = likeRepositoryCustomimpl.countLikedReviewsByUser(user.getId());
 
-        return new DataResponse<>(200, "프로필 조회에 성공했습니다.", new UserProfileResponseDto(user));
+        UserProfileResponseDto userProfileResponseDto = new UserProfileResponseDto(user, likedReviewsCount);
+
+        return new DataResponse<>(200, "프로필 조회에 성공했습니다.", new UserProfileResponseDto(user, likedReviewsCount));
 
     }
 

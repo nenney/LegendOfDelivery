@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
@@ -16,7 +16,7 @@ import static com.sparta.legendofdelivery.domain.like.entity.QLike.like;
 import static com.sparta.legendofdelivery.domain.review.entity.QReview.review;
 
 @RequiredArgsConstructor
-@Component
+@Repository
 public class LikeRepositoryCustomImpl implements LikeRepositoryCustom {
 
     private final JPAQueryFactory queryFactory;
@@ -44,5 +44,14 @@ public class LikeRepositoryCustomImpl implements LikeRepositoryCustom {
                 .fetchCount();
 
         return new PageImpl<>(content, pageable, total);
+    }
+
+    @Override
+    public int countLikedReviewsByUser(Long userId) {
+        return (int) queryFactory
+                .selectFrom(like)
+                .where(like.user.id.eq(userId))
+                .fetchCount();
+
     }
 }

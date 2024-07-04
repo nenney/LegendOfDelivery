@@ -7,4 +7,5 @@ import org.springframework.data.domain.Pageable;
 
 public interface LikeRepositoryCustom {
     Page<ReviewResponseDto> findLikedReviewsByUser(User user, Pageable pageable);
+    int countLikedReviewsByUser(Long userId);
 }
