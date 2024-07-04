@@ -34,9 +34,6 @@ public class Review extends Timestamped {
   @JoinColumn(name = "store_id")
   private Store store;
 
-//  @OneToMany(mappedBy = "review", cascade = CascadeType.ALL, orphanRemoval = true)
-//  private List<Like> likeList = new ArrayList<>();
-
   public Review(CreateReviewRequestDto requestDto,Store store, User user) {
     this.content = requestDto.getComment();
     this.store = store;

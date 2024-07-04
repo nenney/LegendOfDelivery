@@ -1,13 +1,19 @@
 package com.sparta.legendofdelivery.domain.like.service;
 
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.sparta.legendofdelivery.domain.like.entity.Like;
 import com.sparta.legendofdelivery.domain.like.repository.LikeRepository;
+import com.sparta.legendofdelivery.domain.like.repository.LikeRepositoryCustomImpl;
+import com.sparta.legendofdelivery.domain.review.dto.ReviewResponseDto;
 import com.sparta.legendofdelivery.domain.review.entity.Review;
 import com.sparta.legendofdelivery.domain.review.repository.ReviewRepository;
 import com.sparta.legendofdelivery.domain.user.entity.User;
 import com.sparta.legendofdelivery.global.dto.MessageResponse;
 import com.sparta.legendofdelivery.global.exception.BadRequestException;
 import com.sparta.legendofdelivery.global.exception.NotFoundException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -15,10 +21,14 @@ public class LikeService {
 
     private final LikeRepository likeRepository;
     private final ReviewRepository reviewRepository;
+    private final JPAQueryFactory jpaQueryFactory;
+    private final LikeRepositoryCustomImpl likeRepositoryCustomImpl;
 
-    public LikeService(LikeRepository likeRepository, ReviewRepository reviewRepository) {
+    public LikeService(LikeRepository likeRepository, ReviewRepository reviewRepository, JPAQueryFactory jpaQueryFactory, LikeRepositoryCustomImpl likeRepositoryCustomimpl) {
         this.likeRepository = likeRepository;
         this.reviewRepository = reviewRepository;
+        this.jpaQueryFactory = jpaQueryFactory;
+        this.likeRepositoryCustomImpl = likeRepositoryCustomimpl;
     }
 
     public MessageResponse addLike(Long reviewId, User user) {
@@ -53,6 +63,12 @@ public class LikeService {
             return new MessageResponse(200, "좋아요 취소를 성공했습니다.");
         }
 
+    }
+
+    public Page<ReviewResponseDto> getLikedReviewsByUser(User user, int page) {
+
+        Pageable pageable = PageRequest.of(page, 5); // 페이지 크기를 5로 설정
+        return likeRepositoryCustomImpl.findLikedReviewsByUser(user, pageable);
     }
 
     private Review findReviewById(Long reviewId) {

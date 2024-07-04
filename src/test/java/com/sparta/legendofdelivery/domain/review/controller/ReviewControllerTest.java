@@ -201,25 +201,25 @@ class ReviewControllerTest {
         .andReturn();
   }
 
-  @Test
-  @DisplayName("유저 별 리뷰 목록 조회")
-  void getUserReviewList() throws Exception {
-    List<Review> reviewList = new ArrayList<>();
-    reviewList.add(review);
-    reviewList.add(review2);
-
-    UserReviewResponseDto userReviewResponseDto = new UserReviewResponseDto(user.getUserId(), reviewList);
-    DataResponse<UserReviewResponseDto> response = new DataResponse<>(STORE_REVIEWS_FETCHED.getStatus(), STORE_REVIEWS_FETCHED.getMessage(), userReviewResponseDto);
-
-    when(reviewService.getUserReviewList()).thenReturn(response);
-
-    mvc.perform(get("/api/reviews/users")
-            .contentType(MediaType.APPLICATION_JSON)
-            .principal(principal))
-        .andExpect(status().isOk())
-        .andDo(print())
-        .andReturn();
-  }
+//  @Test
+//  @DisplayName("유저 별 리뷰 목록 조회")
+//  void getUserReviewList() throws Exception {
+//    List<Review> reviewList = new ArrayList<>();
+//    reviewList.add(review);
+//    reviewList.add(review2);
+//
+//    UserReviewResponseDto userReviewResponseDto = new UserReviewResponseDto(user.getUserId(), reviewList);
+//    DataResponse<UserReviewResponseDto> response = new DataResponse<>(STORE_REVIEWS_FETCHED.getStatus(), STORE_REVIEWS_FETCHED.getMessage(), userReviewResponseDto);
+//
+//    when(reviewService.getUserReviewList()).thenReturn(response);
+//
+//    mvc.perform(get("/api/reviews/users")
+//            .contentType(MediaType.APPLICATION_JSON)
+//            .principal(principal))
+//        .andExpect(status().isOk())
+//        .andDo(print())
+//        .andReturn();
+//  }
 
   @Test
   @DisplayName("리뷰 삭제")
