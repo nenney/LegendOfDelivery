@@ -36,9 +36,9 @@ public class LikeController {
 
     }
 
-    @GetMapping("/reviews/likes")
+    @GetMapping("/reviews/likes/my")
     public ResponseEntity<Page<ReviewResponseDto>> getLikedReviews(@AuthenticationPrincipal UserDetailsImpl userDetails,
-                                                                   Pageable pageable) {
-        return ResponseEntity.ok(likeService.getLikedReviewsByUser(userDetails.getUser(), pageable.getPageSize()));
+                                                                   @RequestParam("page") int page) {
+        return ResponseEntity.ok(likeService.getLikedReviewsByUser(userDetails.getUser(), page));
     }
 }

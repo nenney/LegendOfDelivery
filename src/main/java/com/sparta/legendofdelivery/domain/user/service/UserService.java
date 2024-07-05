@@ -117,7 +117,7 @@ public class UserService {
         User user = getUser();
         int likedReviewsCount = likeRepositoryCustomimpl.countLikedReviewsByUser(user.getId());
 
-        UserProfileResponseDto userProfileResponseDto = new UserProfileResponseDto(user, likedReviewsCount);
+        new UserProfileResponseDto(user, likedReviewsCount);
 
         return new DataResponse<>(200, "프로필 조회에 성공했습니다.", new UserProfileResponseDto(user, likedReviewsCount));
 

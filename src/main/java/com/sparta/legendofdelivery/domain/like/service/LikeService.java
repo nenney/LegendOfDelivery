@@ -22,13 +22,11 @@ public class LikeService {
     private final LikeRepository likeRepository;
     private final ReviewRepository reviewRepository;
     private final JPAQueryFactory jpaQueryFactory;
-    private final LikeRepositoryCustomImpl likeRepositoryCustomImpl;
 
-    public LikeService(LikeRepository likeRepository, ReviewRepository reviewRepository, JPAQueryFactory jpaQueryFactory, LikeRepositoryCustomImpl likeRepositoryCustomimpl) {
+    public LikeService(LikeRepository likeRepository, ReviewRepository reviewRepository, JPAQueryFactory jpaQueryFactory) {
         this.likeRepository = likeRepository;
         this.reviewRepository = reviewRepository;
         this.jpaQueryFactory = jpaQueryFactory;
-        this.likeRepositoryCustomImpl = likeRepositoryCustomimpl;
     }
 
     public MessageResponse addLike(Long reviewId, User user) {
@@ -68,7 +66,7 @@ public class LikeService {
     public Page<ReviewResponseDto> getLikedReviewsByUser(User user, int page) {
 
         Pageable pageable = PageRequest.of(page, 5); // 페이지 크기를 5로 설정
-        return likeRepositoryCustomImpl.findLikedReviewsByUser(user, pageable);
+        return likeRepository.findLikedReviewsByUser(user, pageable);
     }
 
     private Review findReviewById(Long reviewId) {
