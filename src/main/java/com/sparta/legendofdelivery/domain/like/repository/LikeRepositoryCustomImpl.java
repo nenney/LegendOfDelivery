@@ -28,10 +28,6 @@ public class LikeRepositoryCustomImpl implements LikeRepositoryCustom {
             return Page.empty(pageable);
         }
 
-        // Debug: Print the offset and page size
-        System.out.println("Offset: " + pageable.getOffset());
-        System.out.println("Page Size: " + pageable.getPageSize());
-
         List<ReviewResponseDto> content = queryFactory
                 .select(new QReviewResponseDto(
                         review.id,
@@ -47,17 +43,11 @@ public class LikeRepositoryCustomImpl implements LikeRepositoryCustom {
                 .limit(pageable.getPageSize())
                 .fetch();
 
-        // Debug: Print the content size
-        System.out.println("Content: " + content.size());
-
         long total = queryFactory
                 .selectFrom(like)
                 .where(like.user.eq(user))
                 .fetch()
                 .size();
-
-        // Debug: Print the total number of elements
-        System.out.println("Total: " + total);
 
         return new PageImpl<>(content, pageable, total);
     }
