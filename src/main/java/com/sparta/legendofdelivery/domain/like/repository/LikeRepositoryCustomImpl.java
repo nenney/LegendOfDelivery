@@ -23,7 +23,7 @@ public class LikeRepositoryCustomImpl implements LikeRepositoryCustom {
 
     @Override
     public Page<ReviewResponseDto> findLikedReviewsByUser(User user, Pageable pageable) {
-        // Check the validity of user
+
         if (user == null) {
             return Page.empty(pageable);
         }
