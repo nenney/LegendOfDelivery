@@ -1,6 +1,7 @@
 package com.sparta.legendofdelivery.domain.like.repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.sparta.legendofdelivery.domain.like.entity.QLike;
 import com.sparta.legendofdelivery.domain.review.dto.QReviewResponseDto;
 import com.sparta.legendofdelivery.domain.review.dto.ReviewResponseDto;
 import com.sparta.legendofdelivery.domain.user.entity.User;
@@ -20,6 +21,7 @@ import static com.sparta.legendofdelivery.domain.review.entity.QReview.review;
 public class LikeRepositoryCustomImpl implements LikeRepositoryCustom {
 
     private final JPAQueryFactory queryFactory;
+    private final JPAQueryFactory jpaQueryFactory;
 
     @Override
     public Page<ReviewResponseDto> findLikedReviewsByUser(User user, Pageable pageable) {
@@ -54,11 +56,14 @@ public class LikeRepositoryCustomImpl implements LikeRepositoryCustom {
 
     @Override
     public int countLikedReviewsByUser(Long userId) {
-        return (int) queryFactory
-                .selectFrom(like)
-                .where(like.user.id.eq(userId))
-                .fetch()
-                .size();
+        QLike qLike = like;
 
+        Long count = jpaQueryFactory
+                .select(qLike.count())
+                .from(qLike)
+                .where(qLike.user.id.eq(userId))
+                .fetchOne();
+
+        return count != null ? count.intValue() : 0;
     }
 }

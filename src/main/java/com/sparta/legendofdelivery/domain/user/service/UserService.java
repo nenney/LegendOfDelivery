@@ -1,6 +1,5 @@
 package com.sparta.legendofdelivery.domain.user.service;
 
-import com.sparta.legendofdelivery.domain.like.repository.LikeRepository;
 import com.sparta.legendofdelivery.domain.like.repository.LikeRepositoryCustomImpl;
 import com.sparta.legendofdelivery.domain.user.dto.*;
 import com.sparta.legendofdelivery.domain.user.entity.User;
@@ -48,7 +47,7 @@ public class UserService {
     @Transactional
     public MessageResponse signup(UserSignupRequestDto requestDto) {
 
-        userRepository.findByUserId(requestDto.getUserId()).ifPresent( (el) -> {
+        userRepository.findByUserId(requestDto.getUserId()).ifPresent((el) -> {
             throw new BadRequestException("이미 존재하는 아이디입니다.");
         });
 
@@ -180,7 +179,7 @@ public class UserService {
 
         UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        return userRepository.findByUserId(userDetails.getUsername()).orElseThrow( () -> new NotFoundException("해당 회원은 존재하지 않습니다."));
+        return userRepository.findByUserId(userDetails.getUsername()).orElseThrow(() -> new NotFoundException("해당 회원은 존재하지 않습니다."));
     }
 
     private void checkPassword(String inputPassword, String dbPassword) {
@@ -211,7 +210,7 @@ public class UserService {
         try {
 
             Claims info = jwtProvider.getClaimsFromToken(token);
-            User user = userRepository.findByUserId(info.getSubject()).orElseThrow( () -> new NotFoundException("해당 회원은 존재하지 않습니다."));
+            User user = userRepository.findByUserId(info.getSubject()).orElseThrow(() -> new NotFoundException("해당 회원은 존재하지 않습니다."));
 
             if (!user.getRefreshToken().equals(token)) {
                 throw new UnauthorizedException("유효하지 않은 토큰 입니다.");

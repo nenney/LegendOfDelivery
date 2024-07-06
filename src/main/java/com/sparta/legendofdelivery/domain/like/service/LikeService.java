@@ -3,7 +3,6 @@ package com.sparta.legendofdelivery.domain.like.service;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.sparta.legendofdelivery.domain.like.entity.Like;
 import com.sparta.legendofdelivery.domain.like.repository.LikeRepository;
-import com.sparta.legendofdelivery.domain.like.repository.LikeRepositoryCustomImpl;
 import com.sparta.legendofdelivery.domain.review.dto.ReviewResponseDto;
 import com.sparta.legendofdelivery.domain.review.entity.Review;
 import com.sparta.legendofdelivery.domain.review.repository.ReviewRepository;
@@ -33,7 +32,7 @@ public class LikeService {
 
         Review review = findReviewById(reviewId);
 
-        if (review.getUser().getId().equals(user.getId())){
+        if (review.getUser().getId().equals(user.getId())) {
             throw new BadRequestException("본인이 작성한 리뷰에는 좋아요를 할 수 없습니다.");
         }
 
@@ -76,7 +75,7 @@ public class LikeService {
     }
 
     private Like findLikeByReviewIdAndUserId(Long reviewId, Long userId) {
-        return likeRepository.findLikeByReviewIdAndUserId(reviewId,userId).orElse(null);
+        return likeRepository.findLikeByReviewIdAndUserId(reviewId, userId).orElse(null);
     }
 
 }
